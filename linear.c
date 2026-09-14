@@ -40,6 +40,19 @@ matrix *sum_matrix(matrix *m0, matrix *m1) {
     return sum;
 }
 
+matrix *scalar_mult_matrix(float scalar, matrix *m)
+{
+    matrix *scalar_mult = new_matrix(m->lines, m->columns);
+
+    for (int i = 0; i < scalar_mult->lines; i++) {
+        for (int j = 0; j < scalar_mult->columns; j++) {
+            scalar_mult->values[i][j] = scalar * m->values[i][j];
+        }
+    }
+
+    return scalar_mult;
+}
+
 matrix *mult_matrix(matrix *m0, matrix *m1)
 {
     if (m0->columns != m1->lines)
