@@ -47,19 +47,19 @@ matrix *sum_matrix(matrix *m0, matrix *m1)
     return sum;
 }
 
-matrix *scalar_mult_matrix(float scalar, matrix *m)
+matrix *factor_mult_matrix(float factor, matrix *m)
 {
-    matrix *scalar_mult = new_matrix(m->lines, m->columns);
+    matrix *factor_mult = new_matrix(m->lines, m->columns);
 
-    for (int i = 0; i < scalar_mult->lines; i++)
+    for (int i = 0; i < factor_mult->lines; i++)
     {
-        for (int j = 0; j < scalar_mult->columns; j++)
+        for (int j = 0; j < factor_mult->columns; j++)
         {
-            scalar_mult->values[i][j] = scalar * m->values[i][j];
+            factor_mult->values[i][j] = factor * m->values[i][j];
         }
     }
 
-    return scalar_mult;
+    return factor_mult;
 }
 
 matrix *mult_matrix(matrix *m0, matrix *m1)
@@ -134,4 +134,11 @@ void column_switch_matrix(matrix *m, unsigned int column1, unsigned int column2)
         m->values[i][column2] = temp_column[i];
     }
     free(temp_column);
+}
+
+void factor_line_add(matrix *m, unsigned int to_line, unsigned int from_line, int factor)
+{
+    for (int i = 0; i < m->columns; i++) {
+        m->values[to_line][i] += factor * m->values[from_line][i];
+    }
 }
