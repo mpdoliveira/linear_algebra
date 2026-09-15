@@ -118,7 +118,7 @@ void line_switch_matrix(matrix *m, unsigned int line1, unsigned int line2)
 
     for (int i = 0; i < m->columns; i++) {
         temp_line[i] = m->values[line1][i];
-        m->values[line1][i] = m->values[line2][1];
+        m->values[line1][i] = m->values[line2][i];
         m->values[line2][i] = temp_line[i];
     }
     free(temp_line);
