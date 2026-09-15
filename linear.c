@@ -112,6 +112,9 @@ matrix *copy_matrix(matrix *m)
     return new;
 }
 
+
+// Elementar operations
+
 void line_switch_matrix(matrix *m, unsigned int line1, unsigned int line2)
 {
     float* temp_line = malloc(sizeof(float) * m->columns);
@@ -136,16 +139,24 @@ void column_switch_matrix(matrix *m, unsigned int column1, unsigned int column2)
     free(temp_column);
 }
 
-void factor_line_add(matrix *m, unsigned int to_line, unsigned int from_line, int factor)
+void factor_line_add(matrix *m, unsigned int to_line, unsigned int from_line, float factor)
 {
     for (int i = 0; i < m->columns; i++) {
         m->values[to_line][i] += factor * m->values[from_line][i];
     }
 }
 
-void factor_column_add(matrix *m, unsigned int to_column, unsigned int from_column, int factor)
+void factor_column_add(matrix *m, unsigned int to_column, unsigned int from_column, float factor)
 {
     for (int i = 0; i < m->lines; i++) {
         m->values[i][to_column] += factor * m->values[i][from_column];
+    }
+}
+
+void line_factor(matrix *m, unsigned int line, float factor)
+{
+    for (int i = 0; i < m->columns; i++)
+    {
+        m->values[line][i] = factor * m->values[line][i];
     }
 }
