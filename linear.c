@@ -123,3 +123,15 @@ void line_switch_matrix(matrix *m, unsigned int line1, unsigned int line2)
     }
     free(temp_line);
 }
+
+void column_switch_matrix(matrix *m, unsigned int column1, unsigned int column2)
+{
+    float* temp_column = malloc(sizeof(float) * m->lines);
+
+    for (int i = 0; i < m->lines; i++) {
+        temp_column[i] = m->values[i][column1];
+        m->values[i][column1] = m->values[i][column2];
+        m->values[i][column2] = temp_column[i];
+    }
+    free(temp_column);
+}
