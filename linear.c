@@ -142,3 +142,10 @@ void factor_line_add(matrix *m, unsigned int to_line, unsigned int from_line, in
         m->values[to_line][i] += factor * m->values[from_line][i];
     }
 }
+
+void factor_column_add(matrix *m, unsigned int to_column, unsigned int from_column, int factor)
+{
+    for (int i = 0; i < m->lines; i++) {
+        m->values[i][to_column] += factor * m->values[i][from_column];
+    }
+}
