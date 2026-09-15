@@ -15,7 +15,7 @@ matrix *new_matrix(int lines, int columns)
     m->values = malloc(sizeof(*m->values) * lines);
     for (int i = 0; i < lines; i++)
     {
-        m->values[i] = malloc(sizeof(float) * columns);
+        m->values[i] = calloc(columns, sizeof(float));
 
         for (int j = 0; j < columns; j++)
         {
@@ -78,3 +78,4 @@ matrix *mult_matrix(matrix *m0, matrix *m1)
 
     return mult;
 }
+
