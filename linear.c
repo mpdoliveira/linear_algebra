@@ -79,3 +79,11 @@ matrix *mult_matrix(matrix *m0, matrix *m1)
     return mult;
 }
 
+void free_matrix(matrix *m)
+{
+    for (int i = 0; i < m->lines; i++) {
+        free(m->values[i]);
+    }
+    free(m->values);
+    free(m);
+}
