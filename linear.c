@@ -160,3 +160,11 @@ void line_factor(matrix *m, unsigned int line, float factor)
         m->values[line][i] = factor * m->values[line][i];
     }
 }
+
+void line_factor(matrix *m, unsigned int column, float factor)
+{
+    for (int i = 0; i < m->lines; i++)
+    {
+        m->values[i][column] = factor * m->values[i][column];
+    }
+}
