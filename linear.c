@@ -27,15 +27,19 @@ matrix *new_matrix(int lines, int columns)
     return m;
 }
 
-matrix *sum_matrix(matrix *m0, matrix *m1) {
-    if (m0->lines != m1->lines || m0->columns != m1->columns) {
+matrix *sum_matrix(matrix *m0, matrix *m1)
+{
+    if (m0->lines != m1->lines || m0->columns != m1->columns)
+    {
         return NULL;
     }
 
     matrix *sum = new_matrix(m0->lines, m0->columns);
 
-    for (int i = 0; i < sum->lines; i++) {
-        for (int j = 0; j < sum->columns; j++) {
+    for (int i = 0; i < sum->lines; i++)
+    {
+        for (int j = 0; j < sum->columns; j++)
+        {
             sum->values[i][j] = m0->values[i][j] + m1->values[i][j];
         }
     }
@@ -47,8 +51,10 @@ matrix *scalar_mult_matrix(float scalar, matrix *m)
 {
     matrix *scalar_mult = new_matrix(m->lines, m->columns);
 
-    for (int i = 0; i < scalar_mult->lines; i++) {
-        for (int j = 0; j < scalar_mult->columns; j++) {
+    for (int i = 0; i < scalar_mult->lines; i++)
+    {
+        for (int j = 0; j < scalar_mult->columns; j++)
+        {
             scalar_mult->values[i][j] = scalar * m->values[i][j];
         }
     }
@@ -68,7 +74,7 @@ matrix *mult_matrix(matrix *m0, matrix *m1)
     for (int i = 0; i < mult->lines; i++)
     {
         for (int j = 0; j < mult->columns; j++)
-        { 
+        {
             for (int k = 0; k < m0->columns; k++)
             {
                 mult->values[i][j] += m0->values[i][k] * m1->values[k][j];
@@ -81,9 +87,27 @@ matrix *mult_matrix(matrix *m0, matrix *m1)
 
 void free_matrix(matrix *m)
 {
-    for (int i = 0; i < m->lines; i++) {
+    for (int i = 0; i < m->lines; i++)
+    {
         free(m->values[i]);
     }
     free(m->values);
     free(m);
+}
+
+matrix *copy_matrix(matrix *m)
+{
+    matrix *new = new_matrix(m->lines, m->columns);
+    if (new == NULL) {
+        return NULL;
+    }
+
+    for (int i = 0; i < new->lines; i++)
+    {
+        for (int j = 0; j < new->columns; j++)
+        {
+            new->values[i][j] = m->values[i][j];
+        }
+    }
+    return new;
 }
