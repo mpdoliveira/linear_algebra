@@ -168,3 +168,21 @@ void line_factor(matrix *m, unsigned int column, float factor)
         m->values[i][column] = factor * m->values[i][column];
     }
 }
+
+void print_matrix(matrix *m) {
+    for (int i = 0; i < m->columns; i++) {
+        printf("_");
+    }
+
+    for (int i = 0; i < m->lines; i++) {
+        printf("| ");
+        for (int j = 0; j < m->columns; j++) {
+            printf("%.2f ", &m->values[i][j]);
+        }
+        printf("|\n");
+    }
+
+    for (int i = 0; i < m->columns; i++) {
+        printf("_");
+    }
+}
