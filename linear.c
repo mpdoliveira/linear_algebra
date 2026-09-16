@@ -97,7 +97,8 @@ void free_matrix(matrix *m)
 matrix *copy_matrix(matrix *m)
 {
     matrix *new = new_matrix(m->lines, m->columns);
-    if (new == NULL) {
+    if (new == NULL)
+    {
         return NULL;
     }
 
@@ -111,14 +112,14 @@ matrix *copy_matrix(matrix *m)
     return new;
 }
 
-
 // Elementar operations
 
 void line_switch_matrix(matrix *m, unsigned int line1, unsigned int line2)
 {
-    float* temp_line = malloc(sizeof(float) * m->columns);
+    float *temp_line = malloc(sizeof(float) * m->columns);
 
-    for (int i = 0; i < m->columns; i++) {
+    for (int i = 0; i < m->columns; i++)
+    {
         temp_line[i] = m->values[line1][i];
         m->values[line1][i] = m->values[line2][i];
         m->values[line2][i] = temp_line[i];
@@ -128,9 +129,10 @@ void line_switch_matrix(matrix *m, unsigned int line1, unsigned int line2)
 
 void column_switch_matrix(matrix *m, unsigned int column1, unsigned int column2)
 {
-    float* temp_column = malloc(sizeof(float) * m->lines);
+    float *temp_column = malloc(sizeof(float) * m->lines);
 
-    for (int i = 0; i < m->lines; i++) {
+    for (int i = 0; i < m->lines; i++)
+    {
         temp_column[i] = m->values[i][column1];
         m->values[i][column1] = m->values[i][column2];
         m->values[i][column2] = temp_column[i];
@@ -140,14 +142,16 @@ void column_switch_matrix(matrix *m, unsigned int column1, unsigned int column2)
 
 void factor_line_add(matrix *m, unsigned int to_line, unsigned int from_line, float factor)
 {
-    for (int i = 0; i < m->columns; i++) {
+    for (int i = 0; i < m->columns; i++)
+    {
         m->values[to_line][i] += factor * m->values[from_line][i];
     }
 }
 
 void factor_column_add(matrix *m, unsigned int to_column, unsigned int from_column, float factor)
 {
-    for (int i = 0; i < m->lines; i++) {
+    for (int i = 0; i < m->lines; i++)
+    {
         m->values[i][to_column] += factor * m->values[i][from_column];
     }
 }
@@ -160,18 +164,21 @@ void line_factor(matrix *m, unsigned int line, float factor)
     }
 }
 
-void print_matrix(matrix *m) {
-    for (int i = 0; i < m->lines; i++) {
+void print_matrix(matrix *m)
+{
+    for (int i = 0; i < m->lines; i++)
+    {
         printf("| ");
-        for (int j = 0; j < m->columns; j++) {
+        for (int j = 0; j < m->columns; j++)
+        {
             printf("%.2f ", m->values[i][j]);
         }
         printf("|\n");
     }
 }
 
-
-int main() {
+int main()
+{
     matrix *m = new_matrix(3, 3);
     m->values[0][0] = 1;
     m->values[0][1] = 0;
@@ -189,7 +196,7 @@ int main() {
     line_switch_matrix(m, 1, 2);
     factor_line_add(m, 2, 1, 2);
     factor_line_add(m, 0, 1, -1);
-    line_factor(m, 2, 1.0/9.0);
+    line_factor(m, 2, 1.0 / 9.0);
     factor_line_add(m, 1, 2, -4);
     factor_line_add(m, 0, 2, 3);
 
