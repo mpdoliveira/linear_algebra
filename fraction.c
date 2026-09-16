@@ -14,3 +14,8 @@ void frac_print(Fraction frac)
     printf("%d/%d", frac.n, frac.d);
 }
 
+Fraction frac_add(Fraction frac1, Fraction frac2)
+{
+    return F((frac1.n * frac2.d) + (frac2.n * frac1.d), frac1.d * frac2.d);
+}
+
