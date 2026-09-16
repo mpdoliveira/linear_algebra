@@ -169,3 +169,29 @@ void print_matrix(matrix *m) {
         printf("|\n");
     }
 }
+
+
+int main() {
+    matrix *m = new_matrix(3, 3);
+    m->values[0][0] = 1;
+    m->values[0][1] = 0;
+    m->values[0][2] = 0;
+    m->values[1][0] = 0;
+    m->values[1][1] = 1;
+    m->values[1][2] = 0;
+    m->values[2][0] = 0;
+    m->values[2][1] = 0;
+    m->values[2][2] = 1;
+
+    factor_line_add(m, 1, 0, -1);
+    factor_line_add(m, 2, 0, -1);
+    factor_line_add(m, 2, 1, 2);
+    line_switch_matrix(m, 1, 2);
+    factor_line_add(m, 2, 1, 2);
+    factor_line_add(m, 0, 1, -1);
+    line_factor(m, 2, 1.0/9.0);
+    factor_line_add(m, 1, 2, -4);
+    factor_line_add(m, 0, 2, 3);
+
+    print_matrix(m);
+}
