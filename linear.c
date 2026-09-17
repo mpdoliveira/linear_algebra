@@ -1,14 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <fraction.c>
+
 typedef struct
 {
-    float **values;
-    int lines;
-    int columns;
+    Fraction **values;
+    unsigned int lines;
+    unsigned int columns;
 } matrix;
 
-matrix *new_matrix(int lines, int columns)
+matrix *new_matrix(unsigned int lines, unsigned int columns)
 {
     matrix *m = malloc(sizeof(matrix));
     m->values = malloc(sizeof(*m->values) * lines);
@@ -18,7 +20,7 @@ matrix *new_matrix(int lines, int columns)
 
         for (int j = 0; j < columns; j++)
         {
-            m->values[i][j] = 0;
+            m->values[i][j] = F(0, 0);
         }
     }
     m->lines = lines;
@@ -39,7 +41,7 @@ matrix *sum_matrix(matrix *m0, matrix *m1)
     {
         for (int j = 0; j < sum->columns; j++)
         {
-            sum->values[i][j] = m0->values[i][j] + m1->values[i][j];
+            sum->values[i][j] = frac_add(m0->values[i][j], m1->values[i][j]);
         }
     }
 
@@ -54,7 +56,7 @@ matrix *factor_mult_matrix(float factor, matrix *m)
     {
         for (int j = 0; j < factor_mult->columns; j++)
         {
-            factor_mult->values[i][j] = factor * m->values[i][j];
+            factor_mult->values[i][j].n = factor * m->values[i][j].n;
         }
     }
 
@@ -76,7 +78,9 @@ matrix *mult_matrix(matrix *m0, matrix *m1)
         {
             for (int k = 0; k < m0->columns; k++)
             {
-                mult->values[i][j] += m0->values[i][k] * m1->values[k][j];
+                mult->values[i][j] = frac_add(
+                    mult->values[i][j],
+                    frac_mul(m0->values[i][k], m1->values[k][j]));
             }
         }
     }
@@ -116,7 +120,7 @@ matrix *copy_matrix(matrix *m)
 
 void line_switch_matrix(matrix *m, unsigned int line1, unsigned int line2)
 {
-    float *temp_line = malloc(sizeof(float) * m->columns);
+    Fraction *temp_line = malloc(sizeof(float) * m->columns);
 
     for (int i = 0; i < m->columns; i++)
     {
@@ -129,7 +133,7 @@ void line_switch_matrix(matrix *m, unsigned int line1, unsigned int line2)
 
 void column_switch_matrix(matrix *m, unsigned int column1, unsigned int column2)
 {
-    float *temp_column = malloc(sizeof(float) * m->lines);
+    Fraction *temp_column = malloc(sizeof(float) * m->lines);
 
     for (int i = 0; i < m->lines; i++)
     {
@@ -140,27 +144,31 @@ void column_switch_matrix(matrix *m, unsigned int column1, unsigned int column2)
     free(temp_column);
 }
 
-void factor_line_add(matrix *m, unsigned int to_line, unsigned int from_line, float factor)
+void factor_line_add(matrix *m, unsigned int to_line, unsigned int from_line, Fraction factor)
 {
     for (int i = 0; i < m->columns; i++)
     {
-        m->values[to_line][i] += factor * m->values[from_line][i];
+        m->values[to_line][i] = frac_add(
+            m->values[to_line][i],
+            frac_mul(factor, m->values[from_line][i]));
     }
 }
 
-void factor_column_add(matrix *m, unsigned int to_column, unsigned int from_column, float factor)
+void factor_column_add(matrix *m, unsigned int to_column, unsigned int from_column, Fraction factor)
 {
     for (int i = 0; i < m->lines; i++)
     {
-        m->values[i][to_column] += factor * m->values[i][from_column];
+        m->values[i][to_column] = frac_add(
+            m->values[i][to_column],
+            frac_mul(factor, m->values[i][from_column]));
     }
 }
 
-void line_factor(matrix *m, unsigned int line, float factor)
+void line_factor(matrix *m, unsigned int line, Fraction factor)
 {
     for (int i = 0; i < m->columns; i++)
     {
-        m->values[line][i] = factor * m->values[line][i];
+        m->values[line][i] = frac_mul(factor, m->values[line][i]);
     }
 }
 
@@ -175,30 +183,4 @@ void print_matrix(matrix *m)
         }
         printf("|\n");
     }
-}
-
-int main()
-{
-    matrix *m = new_matrix(3, 3);
-    m->values[0][0] = 1;
-    m->values[0][1] = 0;
-    m->values[0][2] = 0;
-    m->values[1][0] = 0;
-    m->values[1][1] = 1;
-    m->values[1][2] = 0;
-    m->values[2][0] = 0;
-    m->values[2][1] = 0;
-    m->values[2][2] = 1;
-
-    factor_line_add(m, 1, 0, -1);
-    factor_line_add(m, 2, 0, -1);
-    factor_line_add(m, 2, 1, 2);
-    line_switch_matrix(m, 1, 2);
-    factor_line_add(m, 2, 1, 2);
-    factor_line_add(m, 0, 1, -1);
-    line_factor(m, 2, 1.0 / 9.0);
-    factor_line_add(m, 1, 2, -4);
-    factor_line_add(m, 0, 2, 3);
-
-    print_matrix(m);
 }
