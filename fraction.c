@@ -23,3 +23,9 @@ Fraction frac_mul(Fraction frac1, Fraction frac2)
 {
     return F(frac1.n * frac2.n, frac1.d * frac2.d);
 }
+
+Fraction frac_div(Fraction frac1, Fraction frac2)
+{
+    return F(frac1.n * frac2.d, frac1.d * frac2.n);
+}
+
